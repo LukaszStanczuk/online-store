@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
+
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
 
@@ -27,7 +28,7 @@ public class CategoryController {
                 .status(HttpStatus.CREATED).body(categoryMapper.mapToCategoryDto(category));
 
     }
-    @GetMapping
+    @GetMapping("/category")
     List<CategoryDTO> getCategories(){
         return categoryService.getAllCategories().stream()
                 .map(categoryMapper::mapToCategoryDto)

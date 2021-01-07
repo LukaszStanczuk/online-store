@@ -15,4 +15,11 @@ public class ExceptionHandlerController {
     void badRequestHandler(BadRequestException exception){
         log.error(exception.getMessage());
     }
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void notFoundHandler(NotFoundException exception){
+        log.error(exception.getMessage());
+    }
+
 }
+
