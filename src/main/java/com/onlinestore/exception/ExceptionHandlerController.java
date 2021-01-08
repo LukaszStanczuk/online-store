@@ -24,7 +24,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(NotFoundComponentException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    void notFoundComponentException(NotFoundException exception){
+    void notFoundComponentException(NotFoundComponentException exception){
         log.error(exception.getMessage());
     }
 
