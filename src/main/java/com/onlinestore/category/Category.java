@@ -1,17 +1,17 @@
 package com.onlinestore.category;
 
 import com.onlinestore.product.Product;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 
 public class Category {
 
@@ -24,5 +24,6 @@ public class Category {
 
     @OneToMany (mappedBy = "category")
     private List<Product> products;
+
 
 }

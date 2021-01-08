@@ -42,7 +42,7 @@ public class ProductService {
     @Transactional
     public Product editById(ProductDefinition product,Long id) {
         Product editedProduct = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Product with" + id + "not found "));
+                .orElseThrow(() -> new NotFoundException("Product with id " + id + "not found "));
         editedProduct.setTitle(product.getTitle());
         editedProduct.setPrice(product.getPrice());
         editedProduct.setProductType(product.getProductType());

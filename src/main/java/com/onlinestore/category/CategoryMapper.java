@@ -12,4 +12,11 @@ public class CategoryMapper {
                 .build();
     }
 
+   Category mapToCategory(CategoryDTO categoryDTO) {
+        return Category.builder()
+                .name(categoryDTO.getName())
+                .parentCategory(categoryDTO.getParentCategory())
+                .childCategory(categoryDTO.getChildCategory())
+                .build();
+    }
 }

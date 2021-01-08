@@ -1,12 +1,12 @@
 package com.onlinestore.category;
 
+import com.onlinestore.product.Product;
+import com.onlinestore.product.ProductDefinition;
+import com.onlinestore.product.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +35,15 @@ public class CategoryController {
                 .collect(Collectors.toList());
 
     }
-   // todo możliwość przeciągania kategorii (zmiany położenia)
+   // todo możliwość przeciągania kategorii (zmiany położenia) - czy tak to ma wygladac
+
+    @PutMapping("category/{id}")
+    CategoryDTO editById(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id){
+        Category category = categoryMapper.mapToCategory(categoryDTO);
+        Category category1 = categoryService.editById(category, id);
+        return categoryMapper.mapToCategoryDto(category1);
+    }
 }
+
+
 
