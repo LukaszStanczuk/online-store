@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
+
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

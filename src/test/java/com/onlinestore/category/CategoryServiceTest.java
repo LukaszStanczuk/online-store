@@ -26,7 +26,7 @@ class CategoryServiceTest {
 
         // when
 
-        Category category = categoryService.createCategory("Auto", "Motoryzacja", "Skoda");
+        Category category = categoryService.createCategory("Auto", "Motoryzacja");
 
         // then
         assertThat(category).isInstanceOf(Category.class);

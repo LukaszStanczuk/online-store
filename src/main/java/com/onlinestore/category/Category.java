@@ -20,7 +20,6 @@ public class Category {
     private Long id;
     private String name;
     private String parentCategory;
-    private String childCategory;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

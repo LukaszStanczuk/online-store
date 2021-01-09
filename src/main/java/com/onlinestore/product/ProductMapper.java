@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {
-    ProductDto mapToProductDto(Product product){
+    ProductDto mapToProductDto(Product product) {
         return ProductDto.builder()
                 .id(product.getId())
                 .category(product.getCategory())
@@ -16,17 +16,8 @@ public class ProductMapper {
                 .title(product.getTitle())
                 .build();
     }
-
-    ProductDefinition mapToProductDefinition(ProductDto productDto){
-        return ProductDefinition.builder()
-
-                .authors(productDto.getAuthors())
-                .category(productDto.getCategory())
-                .description(productDto.getDescription())
-                .pictureOfProduct(productDto.getPictureOfProduct())
-                .price(productDto.getPrice())
-                .productType(productDto.getProductType())
-                .title(productDto.getTitle())
-                .build();
-    }
 }
+
+
+
+

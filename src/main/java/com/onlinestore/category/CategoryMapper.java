@@ -8,7 +8,6 @@ public class CategoryMapper {
         return CategoryDTO.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .childCategory(category.getChildCategory())
                 .parentCategory(category.getParentCategory())
                 .build();
     }
@@ -18,7 +17,6 @@ public class CategoryMapper {
                 .id(categoryDTO.getId())
                 .name(categoryDTO.getName())
                 .parentCategory(categoryDTO.getParentCategory())
-                .childCategory(categoryDTO.getChildCategory())
                 .build();
     }
 }

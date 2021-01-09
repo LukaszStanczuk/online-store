@@ -11,11 +11,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
+
 public class ProductService {
 
     private final ProductRepository productRepository;
 
-    Product createProduct(ProductDefinition productDefinition) {
+    public Product createProduct(ProductDto productDefinition) {
         if (productDefinition == null){
             throw new BadRequestException("No data to create a product");
         }
@@ -39,8 +41,8 @@ public class ProductService {
                 .orElseThrow(()->new NotFoundException("Product with "+ id + "not found "));
     }
 
-    @Transactional
-    public Product editById(ProductDefinition product,Long id) {
+
+    public Product editById(ProductDto product,Long id) {
         Product editedProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product with id " + id + "not found "));
         editedProduct.setTitle(product.getTitle());

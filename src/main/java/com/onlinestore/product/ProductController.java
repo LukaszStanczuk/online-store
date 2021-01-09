@@ -18,11 +18,10 @@ public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
 
-    @PostMapping("/product")
+    @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@RequestBody ProductDto productDto){
-        ProductDefinition productDefinition = productMapper.mapToProductDefinition(productDto);
-        Product product = productService.createProduct(productDefinition);
+        Product product = productService.createProduct(productDto);
         return productMapper.mapToProductDto(product);
     }
     @GetMapping("/products")
@@ -31,15 +30,14 @@ public class ProductController {
             .map(productMapper::mapToProductDto)
             .collect(Collectors.toList());
     }
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     public ProductDto getById(@PathVariable Long id){
         Product product = productService.getById(id);
         return productMapper.mapToProductDto(product);
     }
-    @PutMapping("product/{id}")
+    @PutMapping("products/{id}")
     public ProductDto editById(@RequestBody ProductDto productDto, @PathVariable Long id){
-        ProductDefinition productDefinition = productMapper.mapToProductDefinition(productDto);
-        Product product = productService.editById(productDefinition, id);
+        Product product = productService.editById(productDto, id);
         return productMapper.mapToProductDto(product);
     }
 }

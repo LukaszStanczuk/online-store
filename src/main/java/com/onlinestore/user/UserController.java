@@ -38,7 +38,8 @@ public class UserController {
 
 
     @PostMapping("/adduser")
-    ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody UserDto userDto) {
         UserDefinition userDefinition = UserDefinition.builder()
                 .address(userDto.getAddress())
                 .username(userDto.getUsername())
@@ -50,8 +51,6 @@ public class UserController {
 
         User user = userCreateService.createUser(userDefinition);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userMapper.mapToUserDto(user));
+        return userMapper.mapToUserDto(user);
     }
 }
