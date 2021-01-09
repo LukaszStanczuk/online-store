@@ -15,7 +15,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    Category createCategory(String name, String parentCategory) {
+    public Category createCategory(String name, String parentCategory) {
         if (name.isEmpty()) {
             throw new BadRequestException("Category cannot be empty");
         }
