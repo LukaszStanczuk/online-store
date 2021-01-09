@@ -1,9 +1,10 @@
 package com.onlinestore.user;
 
+import com.onlinestore.user.userRole.Roles;
+import com.onlinestore.user.userRole.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserController {
     private final UserFetchService userFetchService;
     private final UserMapper userMapper;
     private final UserCreateService userCreateService;
-    private final UserRole USER_ROLE = UserRole.ROLE_USER;
+
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping("/users")
@@ -38,20 +39,21 @@ public class UserController {
 
 
     @PostMapping("/adduser")
-    ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        UserRole userRole = new UserRole();
+        userRole.setUserRole(Roles.ROLE_USER);
         UserDefinition userDefinition = UserDefinition.builder()
                 .address(userDto.getAddress())
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())
                 .avatar(userDto.getAvatar())
                 .contactPreference(userDto.getContactPreference())
-                .userRole(USER_ROLE)
+                .userRole(userRole)
                 .build();
 
         User user = userCreateService.createUser(userDefinition);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userMapper.mapToUserDto(user));
+        return userMapper.mapToUserDto(user);
     }
 }

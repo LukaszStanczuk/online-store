@@ -3,6 +3,9 @@ package com.onlinestore.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.adresses.AddressRepository;
+import com.onlinestore.user.userRole.Roles;
+import com.onlinestore.user.userRole.UserRole;
+import com.onlinestore.user.userRole.UserRoleRepository;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,14 +34,22 @@ class UserCreateIntegrationTest {
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+    @Autowired
+    UserRoleRepository userRoleRepository;
 
-
+    UserRole savedUserRole;
     Address savedAddress;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
+        addressRepository.deleteAll();
         userRepository.deleteAll();
+        userRoleRepository.deleteAll();
+
+        UserRole userRole = new UserRole();
+        userRole.setUserRole(Roles.ROLE_USER);
+        savedUserRole = userRoleRepository.save(userRole);
 
         Address address = new Address();
         address.setCountry("Polska");
@@ -59,7 +70,7 @@ class UserCreateIntegrationTest {
                 "user",
                 "foto",
                 "email",
-                UserRole.ROLE_USER,
+                savedUserRole,
                 savedAddress);
         String requestBody = objectMapper.writeValueAsString(userDto);
         MockHttpServletRequestBuilder post = post("/adduser")

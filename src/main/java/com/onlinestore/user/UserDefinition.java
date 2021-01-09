@@ -1,6 +1,7 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
+import com.onlinestore.user.userRole.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 
