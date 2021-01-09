@@ -22,6 +22,7 @@ public class Author {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany
+    @JoinColumn(name = "products_autor")
     private List<Product> products;
 
 }

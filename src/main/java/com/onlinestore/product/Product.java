@@ -23,7 +23,6 @@ public class Product {
     private String description;
     private String pictureOfProduct;
     private double price;
-    private ProductType productType;
     @ManyToOne
     private Category category;
     @ManyToMany

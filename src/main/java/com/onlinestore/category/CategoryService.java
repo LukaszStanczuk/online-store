@@ -11,30 +11,32 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
-    public Category createCategory(String name, String parentCategory) {
-        if (name.isEmpty()) {
+    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+        if (categoryDTO.getName().isEmpty()) {
             throw new BadRequestException("Category cannot be empty");
         }
         Category category = new Category();
-        category.setName(name);
-        category.setParentCategory(parentCategory);
-        return categoryRepository.save(category);
+        category.setName(categoryDTO.getName());
+        category.setParentCategory(categoryDTO.getParentCategory());
+        return categoryMapper.mapToCategoryDto(categoryRepository.save(category));
     }
 
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    @Transactional
-    public Category editById(Category category, Long id) {
+
+    public CategoryDTO editById(CategoryDTO category, Long id) {
         Category editedCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category with id: " + id + "not found"));
         editedCategory.setParentCategory(category.getParentCategory());
-        return categoryRepository.save(editedCategory);
+        return categoryMapper.mapToCategoryDto(categoryRepository.save(editedCategory));
 
     }
 }

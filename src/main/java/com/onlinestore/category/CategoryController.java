@@ -23,13 +23,9 @@ public class CategoryController {
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDTO createCategory(@RequestBody CategoryDTO categoryDTO) {
-        String name = categoryDTO.getName();
-        String parentCategory = categoryDTO.getParentCategory();
-        Category category = categoryService.createCategory(name, parentCategory);
-        return categoryMapper.mapToCategoryDto(category);
+        return categoryService.createCategory(categoryDTO);
 
     }
-
     @GetMapping("/categories")
     public Categories getCategories() {
         return new Categories(categoryService.getAllCategories().stream()
@@ -37,13 +33,10 @@ public class CategoryController {
                 .collect(Collectors.toList()));
 
     }
-    // todo możliwość przeciągania kategorii (zmiany położenia) - czy tak to ma wygladac
 
     @PutMapping("categories/{id}")
     public CategoryDTO editById(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
-        Category category = categoryMapper.mapToCategory(categoryDTO);
-        Category category1 = categoryService.editById(category, id);
-        return categoryMapper.mapToCategoryDto(category1);
+        return categoryService.editById(categoryDTO,id);
     }
 }
 
