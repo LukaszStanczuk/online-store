@@ -2,6 +2,9 @@ package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.adresses.AddressRepository;
+import com.onlinestore.user.userRole.Roles;
+import com.onlinestore.user.userRole.UserRole;
+import com.onlinestore.user.userRole.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +32,18 @@ class UserFetchServiceTest {
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+    @Autowired
+    UserRoleRepository userRoleRepository;
 
     Address savedAddress;
+
     User savedUser;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
         addressRepository.deleteAll();
+        userRoleRepository.deleteAll();
 
         Address address = new Address();
         address.setCountry("Polska");
@@ -47,10 +54,15 @@ class UserFetchServiceTest {
         address.setPostalCode("80800");
         savedAddress = addressRepository.save(address);
 
+
+        UserRole userRole = new UserRole();
+        userRole.setUserRole(Roles.ROLE_USER);
+        UserRole save = userRoleRepository.save(userRole);
+
         User user = new User();
         user.setUsername("user");
         user.setPassword("user");
-        user.setUserRole(UserRole.ROLE_USER);
+        user.setUserRole(save);
         user.setAvatar("avatar");
         user.setAddress(savedAddress);
         user.setContactPreference("email");

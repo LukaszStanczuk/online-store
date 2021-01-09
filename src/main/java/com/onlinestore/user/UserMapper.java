@@ -12,7 +12,7 @@ public class UserMapper {
         userDto.setAvatar(newUser.getAvatar());
         userDto.setUsername(newUser.getUsername());
         userDto.setPassword(newUser.getPassword());
-        userDto.setUserRole(userDto.getUserRole());
+        userDto.setUserRole(newUser.getUserRole());
         userDto.setContactPreference(newUser.getContactPreference());
         return userDto;
     }

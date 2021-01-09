@@ -1,8 +1,11 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
+import com.onlinestore.user.userRole.UserRole;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,12 +28,18 @@ public class User implements UserDetails {
     private String password;
     private String avatar; //todo: url type?
     private String contactPreference;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne
     private UserRole userRole;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     private Address address;
+    @ToString.Exclude
     private String authorities;
-
 
     @Override
     public List<GrantedAuthority> getAuthorities() {
@@ -38,6 +47,7 @@ public class User implements UserDetails {
                 .map(s -> (GrantedAuthority) () -> s)
                 .collect(Collectors.toList());
     }
+
 
     public void setAuthorities(List<GrantedAuthority> authorities) {
         this.authorities = authorities.stream()
