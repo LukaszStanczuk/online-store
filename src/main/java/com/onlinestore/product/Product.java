@@ -2,6 +2,7 @@ package com.onlinestore.product;
 
 import com.onlinestore.author.Author;
 import com.onlinestore.category.Category;
+import com.onlinestore.orderLine.OrderLine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,7 @@ public class Product {
     private Category category;
     @ManyToMany
     private List<Author> authors;
+    @ManyToOne
+    private OrderLine orderLine;
 
 }

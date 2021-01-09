@@ -1,9 +1,7 @@
 package com.onlinestore.author;
 
 import com.onlinestore.product.Product;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,6 +18,9 @@ public class Author {
     private Long id;
     private String name;
     private String surname;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany
     private List<Product> products;
 

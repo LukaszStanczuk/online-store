@@ -19,26 +19,25 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @PostMapping("/product")
-    ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDto createProduct(@RequestBody ProductDto productDto){
         ProductDefinition productDefinition = productMapper.mapToProductDefinition(productDto);
         Product product = productService.createProduct(productDefinition);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productMapper.mapToProductDto(product));
+        return productMapper.mapToProductDto(product);
     }
     @GetMapping("/products")
-    List<ProductDto> getAllProducts(){
+    public List<ProductDto> getAllProducts(){
     return productService.getAllProducts().stream()
             .map(productMapper::mapToProductDto)
             .collect(Collectors.toList());
     }
     @GetMapping("/product/{id}")
-    ProductDto getById(@PathVariable Long id){
+    public ProductDto getById(@PathVariable Long id){
         Product product = productService.getById(id);
         return productMapper.mapToProductDto(product);
     }
     @PutMapping("product/{id}")
-    ProductDto editById(@RequestBody ProductDto productDto, @PathVariable Long id){
+    public ProductDto editById(@RequestBody ProductDto productDto, @PathVariable Long id){
         ProductDefinition productDefinition = productMapper.mapToProductDefinition(productDto);
         Product product = productService.editById(productDefinition, id);
         return productMapper.mapToProductDto(product);

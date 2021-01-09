@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 public class ProductMapper {
     ProductDto mapToProductDto(Product product){
         return ProductDto.builder()
+                .id(product.getId())
                 .category(product.getCategory())
                 .description(product.getDescription())
                 .pictureOfProduct(product.getPictureOfProduct())
@@ -18,6 +19,7 @@ public class ProductMapper {
 
     ProductDefinition mapToProductDefinition(ProductDto productDto){
         return ProductDefinition.builder()
+
                 .authors(productDto.getAuthors())
                 .category(productDto.getCategory())
                 .description(productDto.getDescription())

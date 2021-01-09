@@ -3,6 +3,7 @@ package com.onlinestore.user;
 import com.onlinestore.user.adresses.Address;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import order.Order;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,6 +31,9 @@ public class User implements UserDetails {
     @ManyToOne
     private Address address;
     private String authorities;
+
+    @OneToOne
+    Order order;
 
 
     @Override
