@@ -1,57 +1,55 @@
 package com.onlinestore.user;
 
+import com.onlinestore.user.role.RolesConfiguration;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserFetchService userFetchService;
     private final UserMapper userMapper;
-    private final UserCreateService userCreateService;
-    private final UserRole USER_ROLE = UserRole.ROLE_USER;
+    private final UserService userService;
+    private final RolesConfiguration rolesConfiguration;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/users")
-    public List<UserDto> getAllUsers() {
-        return userFetchService.getAllUsers()
-                .stream()
-                .map(p -> userMapper.mapToUserDto(p))
-                .collect(Collectors.toList());
+    public Users getAllUsers() {
+        return new Users(userService.getAllUsers());
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    @GetMapping("/user/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/users/{id}")
     public UserDto getUser(@PathVariable long id) {
-        User user = userFetchService.fetchUser(id);
+        final User user = userService.fetchUser(id);
         return userMapper.mapToUserDto(user);
     }
 
+        @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        return userService.createUser(userDto);
+    }
 
-    @PostMapping("/adduser")
-    ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDefinition userDefinition = UserDefinition.builder()
-                .address(userDto.getAddress())
-                .username(userDto.getUsername())
-                .password(userDto.getPassword())
-                .avatar(userDto.getAvatar())
-                .contactPreference(userDto.getContactPreference())
-                .userRole(USER_ROLE)
-                .build();
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/users/{userId}/roles/{role}")
+    public UserDto addRoleToUser(@PathVariable Long userId, @PathVariable String role) {
+        final User user = userService.fetchUser(userId);
+        return userService.changeRole(user, role);
+    }
 
-        User user = userCreateService.createUser(userDefinition);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userMapper.mapToUserDto(user));
+    @Data
+    @AllArgsConstructor
+    static class Users {
+        private List<UserDto> users;
     }
 }

@@ -2,6 +2,9 @@ package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.adresses.AddressRepository;
+import com.onlinestore.user.role.RolesConfiguration;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserFetchServiceTest {
+class UserServiceTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -29,14 +32,18 @@ class UserFetchServiceTest {
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+    @Autowired
+    UserRoleRepository userRoleRepository;
 
     Address savedAddress;
+    RolesConfiguration rolesConfiguration;
     User savedUser;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
         addressRepository.deleteAll();
+        userRoleRepository.deleteAll();
 
         Address address = new Address();
         address.setCountry("Polska");
@@ -47,10 +54,15 @@ class UserFetchServiceTest {
         address.setPostalCode("80800");
         savedAddress = addressRepository.save(address);
 
+
+        UserRole userRole = new UserRole();
+        userRole.setUserRole("USER");
+        UserRole save = userRoleRepository.save(userRole);
+
         User user = new User();
-        user.setUsername("user");
+        user.setUsername("user@user.com");
         user.setPassword("user");
-        user.setUserRole(UserRole.ROLE_USER);
+        user.setUserRole(save);
         user.setAvatar("avatar");
         user.setAddress(savedAddress);
         user.setContactPreference("email");
@@ -64,7 +76,7 @@ class UserFetchServiceTest {
 
         Long userId = savedUser.getId();
 
-        MockHttpServletRequestBuilder request = get("/user/" + userId)
+        MockHttpServletRequestBuilder request = get("/users/" + userId)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
@@ -90,7 +102,7 @@ class UserFetchServiceTest {
     void fetchUserDetails_whenRepositoryIsEmpty_returnInformationAboutEmptyRepository() throws Exception {
         //given
         List<User> users = userRepository.findAll();
-        MockHttpServletRequestBuilder request = get("/user/" + users.size() + 1)
+        MockHttpServletRequestBuilder request = get("/users/" + users.size() + 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
@@ -106,7 +118,7 @@ class UserFetchServiceTest {
     void fetchAllUsersDetails_returnsDetailsOfAllUsers() throws Exception {
         //given
         MockHttpServletRequestBuilder request = get("/users")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
         //when
         MvcResult result = mockMvc.perform(request).andReturn();

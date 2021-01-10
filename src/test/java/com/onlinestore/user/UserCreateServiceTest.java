@@ -1,6 +1,9 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
+import com.onlinestore.user.role.RolesConfiguration;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,29 +16,36 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserCreateServiceTest {
-
     @Mock
     UserRepository userRepository;
+    @Mock
+    RolesConfiguration rolesConfiguration;
+    @Mock
+    UserMapper userMapper;
+    @Mock
+    UserRoleRepository userRoleRepository;
+
     @InjectMocks
-    UserCreateService userCreateService;
+    UserService userService;
 
     @Test
     void userCreateServiceTest() {
         //given
         when(userRepository.save(any(User.class))).thenReturn(new User());
-
+        when(userMapper.mapToUserDto(any(User.class))).thenReturn(new UserDto());
+        when(rolesConfiguration.getDefaultRole()).thenReturn(new String());
+        when(rolesConfiguration.getDefaultRole()).thenReturn(new String());
         //when
-        User result = userCreateService.createUser(UserDefinition.builder()
-                .username("user")
+        UserDto result = userService.createUser(UserDto.builder()
+                .id(null)
+                .username("user@user.pl")
                 .password("user")
                 .avatar("foto")
                 .contactPreference("email")
                 .address(new Address())
-                .userRole(UserRole.ROLE_USER)
+                .userRole(new UserRole())
                 .build());
-
         //then
         verify(userRepository).save(any(User.class));
     }
-
 }
