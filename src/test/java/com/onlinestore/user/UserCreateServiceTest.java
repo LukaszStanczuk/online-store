@@ -1,15 +1,14 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.adresses.AddressRepository;
+import com.onlinestore.user.role.RolesConfiguration;
 import com.onlinestore.user.role.UserRole;
 import com.onlinestore.user.role.UserRoleRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -17,59 +16,35 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserCreateServiceTest {
-
-    @Autowired
+    @Mock
     UserRepository userRepository;
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserRoleRepository userRoleRepository;
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    AddressRepository addressRepository;
-
-    UserRole savedUserRole;
-    Address savedAddress;
+    @Mock
+    RolesConfiguration rolesConfiguration;
+    @Mock
     UserMapper userMapper;
+    @Mock
+    UserRoleRepository userRoleRepository;
 
-    @BeforeEach
-    void setUp() {
-        addressRepository.deleteAll();
-        userRepository.deleteAll();
-        userRoleRepository.deleteAll();
-
-        UserRole userRole = new UserRole();
-        userRole.setUserRole("USER");
-        savedUserRole = userRoleRepository.save(userRole);
-
-        Address address = new Address();
-        address.setCountry("Polska");
-        address.setCity("Gdansk");
-        address.setStreet("Grunwaldzka");
-        address.setApartmentNumber("22");
-        address.setHouseNumber("11");
-        address.setPostalCode("80800");
-        savedAddress = addressRepository.save(address);
-    }
+    @InjectMocks
+    UserService userService;
 
     @Test
     void userCreateServiceTest() {
         //given
-//        when(userRepository.save(any(User.class))).thenReturn(new User());
         when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userMapper.mapToUserDto(any(User.class))).thenReturn(new UserDto());
+        when(rolesConfiguration.getDefaultRole()).thenReturn(new String());
+        when(rolesConfiguration.getDefaultRole()).thenReturn(new String());
         //when
-        User user = new User();
-        user.setUsername("user@user.com");
-        user.setPassword("user");
-        user.setUserRole(new UserRole());
-        user.setAvatar("avatar");
-        user.setAddress(new Address());
-        user.setContactPreference("email");
-
-        UserDto result = userService.createUser(userMapper.mapToUserDto(user));
-
-
+        UserDto result = userService.createUser(UserDto.builder()
+                .id(null)
+                .username("user@user.pl")
+                .password("user")
+                .avatar("foto")
+                .contactPreference("email")
+                .address(new Address())
+                .userRole(new UserRole())
+                .build());
         //then
         verify(userRepository).save(any(User.class));
     }

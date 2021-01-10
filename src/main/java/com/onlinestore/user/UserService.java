@@ -22,10 +22,9 @@ public class UserService {
     private final RolesConfiguration rolesConfiguration;
     private final UserMapper userMapper;
     private final UserRoleRepository userRoleRepository;
-    private UserRole userRole;
 
     UserDto createUser(UserDto userDto) {
-        userRole = new UserRole();
+        UserRole userRole = new UserRole();
         userRole.setUserRole(rolesConfiguration.getDefaultRole());
 
         User user = new User();
@@ -52,6 +51,7 @@ public class UserService {
     }
 
     public UserDto changeRole(User user, String role) {
+        UserRole userRole = new UserRole();
         rolesConfiguration.getRoles().stream().filter(x -> x.equals(role))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Role not exists" + role));
