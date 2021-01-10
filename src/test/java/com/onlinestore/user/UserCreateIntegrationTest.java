@@ -67,14 +67,14 @@ class UserCreateIntegrationTest {
         //given
         UserDto userDto = new UserDto(
                 null,
-                "user",
+                "user@user.pl",
                 "user",
                 "foto",
                 "email",
                 savedUserRole,
                 savedAddress);
         String requestBody = objectMapper.writeValueAsString(userDto);
-        MockHttpServletRequestBuilder post = post("/adduser")
+        MockHttpServletRequestBuilder post = post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 

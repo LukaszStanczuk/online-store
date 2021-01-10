@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public class User implements UserDetails {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne
     private UserRole userRole;
 
     @ToString.Exclude

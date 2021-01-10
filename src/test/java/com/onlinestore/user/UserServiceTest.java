@@ -60,7 +60,7 @@ class UserServiceTest {
         UserRole save = userRoleRepository.save(userRole);
 
         User user = new User();
-        user.setUsername("user");
+        user.setUsername("user@user.com");
         user.setPassword("user");
         user.setUserRole(save);
         user.setAvatar("avatar");
@@ -76,7 +76,7 @@ class UserServiceTest {
 
         Long userId = savedUser.getId();
 
-        MockHttpServletRequestBuilder request = get("/user/" + userId)
+        MockHttpServletRequestBuilder request = get("/users/" + userId)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
@@ -102,7 +102,7 @@ class UserServiceTest {
     void fetchUserDetails_whenRepositoryIsEmpty_returnInformationAboutEmptyRepository() throws Exception {
         //given
         List<User> users = userRepository.findAll();
-        MockHttpServletRequestBuilder request = get("/user/" + users.size() + 1)
+        MockHttpServletRequestBuilder request = get("/users/" + users.size() + 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
@@ -118,7 +118,7 @@ class UserServiceTest {
     void fetchAllUsersDetails_returnsDetailsOfAllUsers() throws Exception {
         //given
         MockHttpServletRequestBuilder request = get("/users")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
         //when
         MvcResult result = mockMvc.perform(request).andReturn();

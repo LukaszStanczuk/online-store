@@ -1,15 +1,15 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.role.RolesConfiguration;
-import com.onlinestore.user.role.UserRole;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -34,11 +34,9 @@ public class UserController {
         return userMapper.mapToUserDto(user);
     }
 
-    @PostMapping("/users")
+        @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        UserRole userRole = new UserRole();
-        userRole.setUserRole(rolesConfiguration.getDefaultRole());
+    public UserDto createUser(@RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
@@ -49,6 +47,7 @@ public class UserController {
         return userService.changeRole(user, role);
     }
 
+    @Data
     @AllArgsConstructor
     static class Users {
         private List<UserDto> users;
