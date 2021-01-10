@@ -66,8 +66,8 @@ public class ProductService {
 
     public Page<ProductDto> getPageOfProduct(Integer pageNumber, Integer pageSize, CategoryDto categoryDto) {
         Category category = categoryMapper.mapToCategory(categoryDto);
-        List<Product> pages = productRepository.findByCategory(category, PageRequest.of(pageNumber, pageSize));
-        return (Page)pages.stream().map(productMapper::mapToProductDto);
+        Page<Product> page = productRepository.findByCategory(category, PageRequest.of(pageNumber, pageSize));
+        return page.map(productMapper::mapToProductDto);
     }
 
 }
