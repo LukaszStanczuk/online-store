@@ -1,4 +1,4 @@
-package com.onlinestore.user.userRole;
+package com.onlinestore.user.role;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,5 @@ public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-//    Roles userRole;
     String userRole;
 }

@@ -1,8 +1,8 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.userRole.UserRole;
-import com.onlinestore.user.userRole.UserRoleRepository;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ class UserCreateServiceTest {
     @Mock
     UserRepository userRepository;
     @InjectMocks
-    UserCreateService userCreateService;
+    UserService userCreateService;
     @Autowired
     UserRoleRepository userRoleRepository;
 
@@ -36,7 +36,7 @@ class UserCreateServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
         //when
-        User result = userCreateService.createUser(UserDefinition.builder()
+        UserDto result = userCreateService.createUser(UserDto.builder()
                 .username("user")
                 .password("user")
                 .avatar("foto")

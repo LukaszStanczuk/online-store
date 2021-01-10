@@ -2,9 +2,9 @@ package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.adresses.AddressRepository;
-import com.onlinestore.user.userRole.Roles;
-import com.onlinestore.user.userRole.UserRole;
-import com.onlinestore.user.userRole.UserRoleRepository;
+import com.onlinestore.user.role.RolesConfiguration;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserFetchServiceTest {
+class UserServiceTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -36,7 +36,7 @@ class UserFetchServiceTest {
     UserRoleRepository userRoleRepository;
 
     Address savedAddress;
-
+    RolesConfiguration rolesConfiguration;
     User savedUser;
 
     @BeforeEach
@@ -56,7 +56,7 @@ class UserFetchServiceTest {
 
 
         UserRole userRole = new UserRole();
-        userRole.setUserRole(Roles.ROLE_USER);
+        userRole.setUserRole("USER");
         UserRole save = userRoleRepository.save(userRole);
 
         User user = new User();

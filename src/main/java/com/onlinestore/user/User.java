@@ -1,15 +1,15 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.userRole.UserRole;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.onlinestore.user.role.UserRole;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +23,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
+    @NotBlank
+    @Email
+    @Column(name = "email", unique = true)
     private String username;
+    @NotBlank
     private String password;
-    private String avatar; //todo: url type?
+    private String avatar;
+    @NotBlank
     private String contactPreference;
 
     @ToString.Exclude
