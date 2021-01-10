@@ -18,24 +18,20 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        if (categoryDTO.getName().isEmpty()) {
-            throw new BadRequestException("Category cannot be empty");
-        }
+    public CategoryDto createCategory(CategoryDto categoryDTO) {
         Category category = new Category();
         category.setName(categoryDTO.getName());
         category.setParentCategory(categoryDTO.getParentCategory());
         return categoryMapper.mapToCategoryDto(categoryRepository.save(category));
     }
 
-    public List<CategoryDTO> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .map(categoryMapper::mapToCategoryDto)
                 .collect(Collectors.toList());
-
     }
 
-    public CategoryDTO editById(CategoryDTO category, Long id) {
+    public CategoryDto editById(CategoryDto category, Long id) {
         Category editedCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category with id: " + id + "not found"));
         editedCategory.setParentCategory(category.getParentCategory());

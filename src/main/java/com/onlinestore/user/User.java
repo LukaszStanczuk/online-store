@@ -32,8 +32,8 @@ public class User implements UserDetails {
     private Address address;
     private String authorities;
 
-    @OneToOne
-    Order order;
+    //@OneToOne
+    //Order order;
 
 
     @Override

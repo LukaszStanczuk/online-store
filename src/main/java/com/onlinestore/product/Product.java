@@ -27,7 +27,5 @@ public class Product {
     private Category category;
     @ManyToMany
     private List<Author> authors;
-    @ManyToOne
-    private OrderLine orderLine;
 
 }

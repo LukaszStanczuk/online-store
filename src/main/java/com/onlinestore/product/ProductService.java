@@ -1,14 +1,19 @@
 package com.onlinestore.product;
 
 import com.onlinestore.category.Category;
+import com.onlinestore.category.CategoryDto;
+import com.onlinestore.category.CategoryMapper;
 import com.onlinestore.exception.BadRequestException;
 import com.onlinestore.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,11 +24,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final CategoryMapper categoryMapper;
 
-    public Product createProduct(ProductDto productDto) {
-        if (productDto == null){
-            throw new BadRequestException("No data to create a product");
-        }
+    public ProductDto createProduct(ProductDto productDto) {
         Product product = new Product();
         product.setAuthors(productDto.getAuthors());
         product.setCategory(productDto.getCategory());
@@ -31,30 +34,24 @@ public class ProductService {
         product.setPictureOfProduct(productDto.getPictureOfProduct());
         product.setPrice(productDto.getPrice());
         product.setTitle(productDto.getTitle());
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.mapToProductDto(savedProduct);
     }
 
     public List<ProductDto> getAllProducts() {
 
-       return productRepository.findAll().stream()
+        return productRepository.findAll().stream()
                 .map(productMapper::mapToProductDto)
                 .collect(Collectors.toList());
-
     }
 
-    public Product getById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("Product with "+ id + "not found "));
-    }
-    public boolean productWithIdExist(Long id) {
-        return findOptionalProductById(id).isPresent();
-    }
-    //todo czy tak mają wyglądać te validacje
-    public Optional<Product> findOptionalProductById(Long id){
-        return Optional.of(productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product with " + id + "not exist ")));
+    public ProductDto getById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product with " + id + "not found "));
+        return productMapper.mapToProductDto(product);
     }
 
-    public Product editById(ProductDto product,Long id) {
+    public ProductDto editById(ProductDto product, Long id) {
         Product editedProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product with id " + id + "not found "));
         editedProduct.setTitle(product.getTitle());
@@ -63,10 +60,15 @@ public class ProductService {
         editedProduct.setDescription(product.getDescription());
         editedProduct.setCategory(product.getCategory());
         editedProduct.setAuthors(product.getAuthors());
-        return productRepository.save(editedProduct);
+        Product savedProduct = productRepository.save(editedProduct);
+        return productMapper.mapToProductDto(savedProduct);
     }
 
-
+    public Page<ProductDto> getPageOfProduct(Integer pageNumber, Integer pageSize, CategoryDto categoryDto) {
+        Category category = categoryMapper.mapToCategory(categoryDto);
+        List<Product> pages = productRepository.findByCategory(category, PageRequest.of(pageNumber, pageSize));
+        return (Page)pages.stream().map(productMapper::mapToProductDto);
+    }
 
 }
 

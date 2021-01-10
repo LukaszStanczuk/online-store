@@ -24,7 +24,7 @@ public class Category {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany (mappedBy = "category")
-    @JoinColumn(name= "products_category")
+//    @JoinColumn(name= "products_category")
     private List<Product> products;
 
 

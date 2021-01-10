@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryDTO {
+public class CategoryDto {
     private Long id;
     @NotNull
     private String name;

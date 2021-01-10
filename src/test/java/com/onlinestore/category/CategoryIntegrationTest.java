@@ -35,7 +35,7 @@ public class CategoryIntegrationTest {
     @Test
     void createLocalization_returnsLocalizationsAnd200StatusCode() throws Exception {
         // given
-        CategoryDTO requestBody = new CategoryDTO(1L,"auto","motoryzacja");
+        CategoryDto requestBody = new CategoryDto(1L,"auto","motoryzacja");
         MockHttpServletRequestBuilder request = post("/category")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody));
@@ -45,8 +45,8 @@ public class CategoryIntegrationTest {
 
         // then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        CategoryDTO responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), CategoryDTO.class);
-        assertThat(responseBody).extracting(CategoryDTO::getName, CategoryDTO::getParentCategory).containsExactly("auto", "motoryzacja");
+        CategoryDto responseBody = objectMapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), CategoryDto.class);
+        assertThat(responseBody).extracting(CategoryDto::getName, CategoryDto::getParentCategory).containsExactly("auto", "motoryzacja");
         assertThat(categoryRepository.findAll()).singleElement().satisfies(category -> {
             assertThat(category.getName()).isEqualTo("auto");
             assertThat(category.getParentCategory()).isEqualTo("motoryzacja");

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,24 +16,23 @@ public class CategoryController {
 
     @AllArgsConstructor
     static class Categories {
-        private List<CategoryDTO> categories;
+        private List<CategoryDto> categories;
     }
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDTO createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
+    public CategoryDto createCategory(@Valid @RequestBody CategoryDto categoryDTO) {
         return categoryService.createCategory(categoryDTO);
-
     }
+
     @GetMapping("/categories")
     public Categories getCategories() {
         return new Categories(categoryService.getAllCategories());
-
     }
 
     @PutMapping("categories/{id}")
-    public CategoryDTO editById(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id) {
-        return categoryService.editById(categoryDTO,id);
+    public CategoryDto editById(@RequestBody CategoryDto categoryDTO, @PathVariable Long id) {
+        return categoryService.editById(categoryDTO, id);
     }
 }
 

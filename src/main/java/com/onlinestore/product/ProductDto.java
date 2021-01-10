@@ -1,5 +1,6 @@
 package com.onlinestore.product;
 
+import com.onlinestore.annotation.ExistingProduct;
 import com.onlinestore.author.Author;
 import com.onlinestore.category.Category;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class ProductDto {
+
+    @ExistingProduct
     private Long id;
     @NotNull
     private String title;

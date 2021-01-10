@@ -26,10 +26,10 @@ public class Order {
     String userAddress;
     LocalDateTime orderDate;
     OrderStatus orderStatus;
-    @OneToMany(mappedBy = "order")
-    private List<OrderLine> orderLine;
-    @OneToOne
-    User user;
+    //@OneToMany(mappedBy = "order")
+    //private List<OrderLine> orderLine;
+    //@OneToOne
+   // User user;
 
 
 
