@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     public Product createProduct(ProductDto productDto) {
         if (productDto == null){
@@ -32,8 +34,12 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProducts() {
+
+       return productRepository.findAll().stream()
+                .map(productMapper::mapToProductDto)
+                .collect(Collectors.toList());
+
     }
 
     public Product getById(Long id) {

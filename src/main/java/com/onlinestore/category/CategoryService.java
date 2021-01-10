@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -27,10 +28,12 @@ public class CategoryService {
         return categoryMapper.mapToCategoryDto(categoryRepository.save(category));
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
-    }
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(categoryMapper::mapToCategoryDto)
+                .collect(Collectors.toList());
 
+    }
 
     public CategoryDTO editById(CategoryDTO category, Long id) {
         Category editedCategory = categoryRepository.findById(id)

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,16 +27,14 @@ public class ProductController {
 
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+    public ProductDto createProduct(@Valid @RequestBody ProductDto productDto) {
         Product product = productService.createProduct(productDto);
         return productMapper.mapToProductDto(product);
     }
 
     @GetMapping("/products")
     public Products getAllProducts() {
-        return new Products(productService.getAllProducts().stream()
-                .map(productMapper::mapToProductDto)
-                .collect(Collectors.toList()));
+        return new Products(productService.getAllProducts());
     }
 
     @GetMapping("/products/{id}")

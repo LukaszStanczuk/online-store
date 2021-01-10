@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,6 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
 
     @AllArgsConstructor
     static class Categories {
@@ -22,15 +22,13 @@ public class CategoryController {
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDTO createCategory(@RequestBody CategoryDTO categoryDTO) {
+    public CategoryDTO createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         return categoryService.createCategory(categoryDTO);
 
     }
     @GetMapping("/categories")
     public Categories getCategories() {
-        return new Categories(categoryService.getAllCategories().stream()
-                .map(categoryMapper::mapToCategoryDto)
-                .collect(Collectors.toList()));
+        return new Categories(categoryService.getAllCategories());
 
     }
 
