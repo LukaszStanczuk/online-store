@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Component
@@ -13,13 +14,16 @@ import java.util.List;
 public class UserFetchService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public User fetchUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundComponentException("Bad id: " + id));
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll() .stream()
+                .map(p -> userMapper.mapToUserDto(p))
+                .collect(Collectors.toList());
     }
 }
