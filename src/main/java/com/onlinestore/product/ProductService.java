@@ -20,8 +20,10 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    // return ProductDto
     public Product createProduct(ProductDto productDto) {
-        if (productDto == null){
+        // if do wywalenia
+        if (productDto == null) {
             throw new BadRequestException("No data to create a product");
         }
         Product product = new Product();
@@ -35,38 +37,28 @@ public class ProductService {
     }
 
     public List<ProductDto> getAllProducts() {
-
-       return productRepository.findAll().stream()
-                .map(productMapper::mapToProductDto)
-                .collect(Collectors.toList());
-
+        return productRepository.findAll().stream()
+            .map(productMapper::mapToProductDto)
+            .collect(Collectors.toList());
     }
 
+    // return ProductDto
     public Product getById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("Product with "+ id + "not found "));
-    }
-    public boolean productWithIdExist(Long id) {
-        return findOptionalProductById(id).isPresent();
-    }
-    //todo czy tak mają wyglądać te validacje
-    public Optional<Product> findOptionalProductById(Long id){
-        return Optional.of(productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product with " + id + "not exist ")));
+            .orElseThrow(() -> new NotFoundException("Product with " + id + "not found "));
     }
 
-    public Product editById(ProductDto product,Long id) {
+    // return ProductDto
+    public Product editById(ProductDto product, Long id) {
         Product editedProduct = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Product with id " + id + "not found "));
+            .orElseThrow(() -> new NotFoundException("Product with id " + id + "not found "));
         editedProduct.setTitle(product.getTitle());
         editedProduct.setPrice(product.getPrice());
         editedProduct.setPictureOfProduct(product.getPictureOfProduct());
         editedProduct.setDescription(product.getDescription());
         editedProduct.setCategory(product.getCategory());
         editedProduct.setAuthors(product.getAuthors());
-        return productRepository.save(editedProduct);
+        return editedProduct;
     }
-
-
-
 }
 

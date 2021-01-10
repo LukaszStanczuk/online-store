@@ -14,7 +14,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-
+// DTO -> Dto
+// ABC, QWE -> AbcQwe -> ABCQWE
 public class ProductDto {
     private Long id;
     @NotNull
