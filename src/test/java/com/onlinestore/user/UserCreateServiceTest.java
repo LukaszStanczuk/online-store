@@ -1,8 +1,8 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.userRole.UserRole;
-import com.onlinestore.user.userRole.UserRoleRepository;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

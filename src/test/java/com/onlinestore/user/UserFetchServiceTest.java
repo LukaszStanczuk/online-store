@@ -1,10 +1,10 @@
 package com.onlinestore.user;
 
-import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.adresses.AddressRepository;
-import com.onlinestore.user.userRole.Roles;
-import com.onlinestore.user.userRole.UserRole;
-import com.onlinestore.user.userRole.UserRoleRepository;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import com.onlinestore.user.adresses.Address;
+import com.onlinestore.user.adresses.AddressRepository;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -56,7 +56,7 @@ class UserFetchServiceTest {
 
 
         UserRole userRole = new UserRole();
-        userRole.setUserRole(Roles.ROLE_USER);
+        //userRole.setUserRole(Roles.ROLE_USER);
         UserRole save = userRoleRepository.save(userRole);
 
         User user = new User();

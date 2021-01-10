@@ -1,12 +1,8 @@
 package com.onlinestore.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.adresses.AddressRepository;
-import com.onlinestore.user.userRole.Roles;
-import com.onlinestore.user.userRole.UserRole;
-import com.onlinestore.user.userRole.UserRoleRepository;
-import lombok.NoArgsConstructor;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onlinestore.user.adresses.Address;
+import com.onlinestore.user.adresses.AddressRepository;
+import com.onlinestore.user.role.UserRole;
+import com.onlinestore.user.role.UserRoleRepository;
+import lombok.NoArgsConstructor;
 
 
 @SpringBootTest
@@ -48,7 +48,7 @@ class UserCreateIntegrationTest {
         userRoleRepository.deleteAll();
 
         UserRole userRole = new UserRole();
-        userRole.setUserRole(Roles.ROLE_USER);
+        //userRole.setUserRole(Roles.ROLE_USER);
         savedUserRole = userRoleRepository.save(userRole);
 
         Address address = new Address();

@@ -1,7 +1,7 @@
 package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
-import com.onlinestore.user.userRole.UserRole;
+import com.onlinestore.user.role.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

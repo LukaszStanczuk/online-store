@@ -1,4 +1,4 @@
-package com.onlinestore.user.userRole;
+package com.onlinestore.user.role;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
