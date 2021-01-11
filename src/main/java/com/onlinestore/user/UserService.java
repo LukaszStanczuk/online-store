@@ -23,7 +23,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRoleRepository userRoleRepository;
 
-    UserDto createUser(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) {
         UserRole userRole = new UserRole();
         userRole.setUserRole(rolesConfiguration.getDefaultRole());
 

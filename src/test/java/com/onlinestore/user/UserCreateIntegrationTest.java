@@ -69,7 +69,7 @@ class UserCreateIntegrationTest {
                 null,
                 "user@user.pl",
                 "user",
-                "foto",
+                "www.foto.pl",
                 "email",
                 savedUserRole,
                 savedAddress);

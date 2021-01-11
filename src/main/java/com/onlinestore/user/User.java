@@ -22,14 +22,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Email
+
     @Column(name = "email", unique = true)
     private String username;
-    @NotBlank
     private String password;
     private String avatar;
-    @NotBlank
     private String contactPreference;
 
     @ToString.Exclude

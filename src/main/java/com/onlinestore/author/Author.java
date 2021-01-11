@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-
 public class Author {
 
     @Id
@@ -22,5 +21,4 @@ public class Author {
     private String surname;
     @ManyToMany
     private List<Product> products;
-
 }
