@@ -38,7 +38,7 @@ class UserCreateServiceTest {
         //when
         UserDto result = userService.createUser(UserDto.builder()
                 .id(null)
-                .username("user@user.pl")
+                .username("user")
                 .password("user")
                 .avatar("foto")
                 .contactPreference("email")
