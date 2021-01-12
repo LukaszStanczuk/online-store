@@ -43,10 +43,11 @@ public class ProductController {
     public ProductDto editById(@RequestBody ProductDto productDto, @PathVariable Long id) {
         return productService.editById(productDto, id);
     }
-  @GetMapping("/products")
+
+    @GetMapping("/products/page/")
     public Page<ProductDto> getPageOfProducts(@RequestParam(name = "pageNumber") Integer pageNumber, @RequestParam(name = "pageSize") Integer pageSize, @RequestBody CategoryDto categoryDto) {
-       return productService.getPageOfProduct(pageNumber, pageSize,categoryDto);
-   }
+        return productService.getPageOfProduct(pageNumber, pageSize, categoryDto);
+    }
 }
 
 
