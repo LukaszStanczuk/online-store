@@ -1,14 +1,15 @@
 package com.onlinestore.product;
 
 
-import com.onlinestore.category.CategoryDTO;
+import com.onlinestore.category.CategoryDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,32 +17,36 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductMapper productMapper;
 
-    @PostMapping("/product")
-    ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto){
-        ProductDefinition productDefinition = productMapper.mapToProductDefinition(productDto);
-        Product product = productService.createProduct(productDefinition);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productMapper.mapToProductDto(product));
+    @AllArgsConstructor
+    static class Products {
+        private List<ProductDto> products;
     }
+
+    @PostMapping("/products")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDto createProduct(@Valid @RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
+    }
+
     @GetMapping("/products")
-    List<ProductDto> getAllProducts(){
-    return productService.getAllProducts().stream()
-            .map(productMapper::mapToProductDto)
-            .collect(Collectors.toList());
+    public Products getAllProducts() {
+        return new Products(productService.getAllProducts());
     }
-    @GetMapping("/product/{id}")
-    ProductDto getById(@PathVariable Long id){
-        Product product = productService.getById(id);
-        return productMapper.mapToProductDto(product);
+
+    @GetMapping("/products/{id}")
+    public ProductDto getById(@PathVariable Long id) {
+        return productService.getById(id);
     }
-    @PutMapping("product/{id}")
-    ProductDto editById(@RequestBody ProductDto productDto, @PathVariable Long id){
-        ProductDefinition productDefinition = productMapper.mapToProductDefinition(productDto);
-        Product product = productService.editById(productDefinition, id);
-        return productMapper.mapToProductDto(product);
+
+    @PutMapping("products/{id}")
+    public ProductDto editById(@RequestBody ProductDto productDto, @PathVariable Long id) {
+        return productService.editById(productDto, id);
+    }
+
+    @GetMapping("/products/page/")
+    public Page<ProductDto> getPageOfProducts(@RequestParam(name = "pageNumber") Integer pageNumber, @RequestParam(name = "pageSize") Integer pageSize, @RequestBody CategoryDto categoryDto) {
+        return productService.getPageOfProduct(pageNumber, pageSize, categoryDto);
     }
 }
 

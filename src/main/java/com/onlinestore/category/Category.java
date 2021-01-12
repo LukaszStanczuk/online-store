@@ -20,9 +20,10 @@ public class Category {
     private Long id;
     private String name;
     private String parentCategory;
-    private String childCategory;
 
-    @OneToMany (mappedBy = "category")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 
 

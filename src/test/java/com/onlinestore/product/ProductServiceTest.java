@@ -23,7 +23,7 @@ class ProductServiceTest {
         when(productRepository.save(any(Product.class))).thenReturn(new Product());
 
         // when
-        Product product = productService.createProduct(new ProductDefinition());
+        ProductDto product = productService.createProduct(new ProductDto());
 
         // then
         assertThat(product).isInstanceOf(Product.class);

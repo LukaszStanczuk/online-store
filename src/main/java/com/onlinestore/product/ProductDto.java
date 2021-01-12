@@ -1,5 +1,6 @@
 package com.onlinestore.product;
 
+import com.onlinestore.annotation.ExistingProduct;
 import com.onlinestore.author.Author;
 import com.onlinestore.category.Category;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -15,12 +17,17 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class ProductDto {
+
+    @ExistingProduct
     private Long id;
+    @NotNull
     private String title;
+    @NotNull
     private String description;
+    @NotNull
     private String pictureOfProduct;
+    @NotNull
     private double price;
-    private ProductType productType;
     private Category category;
     private List<Author> authors;
 }

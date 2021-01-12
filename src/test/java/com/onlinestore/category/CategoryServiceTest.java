@@ -22,11 +22,11 @@ class CategoryServiceTest {
     @Test
     void createCategory_savesCategoryInTheRepository() {
         // given
+        CategoryDto categoryDTO = new CategoryDto(1L,"Auto","Motoryzacja");
         when(categoryRepository.save(any(Category.class))).thenReturn(new Category());
 
         // when
-
-        Category category = categoryService.createCategory("Auto", "Motoryzacja", "Skoda");
+        CategoryDto category = categoryService.createCategory(categoryDTO);
 
         // then
         assertThat(category).isInstanceOf(Category.class);

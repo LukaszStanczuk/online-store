@@ -1,56 +1,74 @@
 package com.onlinestore.product;
 
 import com.onlinestore.category.Category;
+import com.onlinestore.category.CategoryDto;
+import com.onlinestore.category.CategoryMapper;
 import com.onlinestore.exception.BadRequestException;
 import com.onlinestore.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
+
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final CategoryMapper categoryMapper;
 
-    Product createProduct(ProductDefinition productDefinition) {
-        if (productDefinition == null){
-            throw new BadRequestException("No data to create a product");
-        }
+    public ProductDto createProduct(ProductDto productDto) {
         Product product = new Product();
-        product.setAuthors(productDefinition.getAuthors());
-        product.setCategory(productDefinition.getCategory());
-        product.setDescription(productDefinition.getDescription());
-        product.setPictureOfProduct(productDefinition.getPictureOfProduct());
-        product.setPrice(productDefinition.getPrice());
-        product.setProductType(productDefinition.getProductType());
-        product.setTitle(productDefinition.getTitle());
-        return productRepository.save(product);
+        product.setAuthors(productDto.getAuthors());
+        product.setCategory(productDto.getCategory());
+        product.setDescription(productDto.getDescription());
+        product.setPictureOfProduct(productDto.getPictureOfProduct());
+        product.setPrice(productDto.getPrice());
+        product.setTitle(productDto.getTitle());
+        Product savedProduct = productRepository.save(product);
+        return productMapper.mapToProductDto(savedProduct);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProducts() {
+
+        return productRepository.findAll().stream()
+                .map(productMapper::mapToProductDto)
+                .collect(Collectors.toList());
     }
 
-    public Product getById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("Product with "+ id + "not found "));
+    public ProductDto getById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product with " + id + "not found "));
+        return productMapper.mapToProductDto(product);
     }
 
-    @Transactional
-    public Product editById(ProductDefinition product,Long id) {
+    public ProductDto editById(ProductDto product, Long id) {
         Product editedProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product with id " + id + "not found "));
         editedProduct.setTitle(product.getTitle());
         editedProduct.setPrice(product.getPrice());
-        editedProduct.setProductType(product.getProductType());
         editedProduct.setPictureOfProduct(product.getPictureOfProduct());
         editedProduct.setDescription(product.getDescription());
         editedProduct.setCategory(product.getCategory());
         editedProduct.setAuthors(product.getAuthors());
-        return productRepository.save(editedProduct);
+        Product savedProduct = productRepository.save(editedProduct);
+        return productMapper.mapToProductDto(savedProduct);
     }
+
+    public Page<ProductDto> getPageOfProduct(Integer pageNumber, Integer pageSize, CategoryDto categoryDto) {
+        Category category = categoryMapper.mapToCategory(categoryDto);
+        Page<Product> page = productRepository.findByCategory(category, PageRequest.of(pageNumber, pageSize));
+        return page.map(productMapper::mapToProductDto);
+    }
+
 }
 

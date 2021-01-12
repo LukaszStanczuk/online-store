@@ -1,47 +1,38 @@
 package com.onlinestore.category;
 
-import com.onlinestore.product.Product;
-import com.onlinestore.product.ProductDefinition;
-import com.onlinestore.product.ProductDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
 
-    @PostMapping("/category")
-    ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        String name = categoryDTO.getName();
-        String parentCategory = categoryDTO.getParentCategory();
-        String childCategory = categoryDTO.getChildCategory();
-        Category category = categoryService.createCategory(name, parentCategory, childCategory);
-        return ResponseEntity
-                .status(HttpStatus.CREATED).body(categoryMapper.mapToCategoryDto(category));
-
+    @AllArgsConstructor
+    static class Categories {
+        private List<CategoryDto> categories;
     }
-    @GetMapping("/category")
-    List<CategoryDTO> getCategories(){
-        return categoryService.getAllCategories().stream()
-                .map(categoryMapper::mapToCategoryDto)
-                .collect(Collectors.toList());
 
+    @PostMapping("/categories")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryDto createCategory(@Valid @RequestBody CategoryDto categoryDTO) {
+        return categoryService.createCategory(categoryDTO);
     }
-   // todo możliwość przeciągania kategorii (zmiany położenia) - czy tak to ma wygladac
 
-    @PutMapping("category/{id}")
-    CategoryDTO editById(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id){
-        Category category = categoryMapper.mapToCategory(categoryDTO);
-        Category category1 = categoryService.editById(category, id);
-        return categoryMapper.mapToCategoryDto(category1);
+    @GetMapping("/categories")
+    public Categories getCategories() {
+        return new Categories(categoryService.getAllCategories());
+    }
+
+    @PutMapping("categories/{id}")
+    public CategoryDto editById(@RequestBody CategoryDto categoryDTO, @PathVariable Long id) {
+        return categoryService.editById(categoryDTO, id);
     }
 }
 
