@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
-import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,12 +21,11 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UserDto {
 
-    @ExistingUser
+//    @ExistingUser
     private Long id;
 
     @Email
     @NotBlank
-    @UniqueElements
     private String username;
 
     @NotBlank
@@ -39,11 +38,11 @@ public class UserDto {
     @NotBlank
     private String contactPreference;
 
-    @NotBlank
-    @ExistingRole
+//    @ExistingRole
+    @NonNull
     private UserRole userRole;
 
-    @NotBlank
-    @ExistingAddress
+//    @ExistingAddress
+    @NonNull
     private Address address;
 }
