@@ -3,7 +3,6 @@ package com.onlinestore.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.adresses.AddressRepository;
-import com.onlinestore.user.role.RolesConfiguration;
 import com.onlinestore.user.role.UserRole;
 import com.onlinestore.user.role.UserRoleRepository;
 import lombok.NoArgsConstructor;
@@ -37,29 +36,26 @@ class UserCreateIntegrationTest {
     @Autowired
     UserRoleRepository userRoleRepository;
 
-    UserRole savedUserRole;
-    Address savedAddress;
-    RolesConfiguration rolesConfiguration;
+    UserRole userRole;
+    Address address;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
-        addressRepository.deleteAll();
         userRepository.deleteAll();
+        addressRepository.deleteAll();
         userRoleRepository.deleteAll();
 
-        UserRole userRole = new UserRole();
+        userRole = new UserRole();
         userRole.setUserRole("USER");
-        savedUserRole = userRoleRepository.save(userRole);
 
-        Address address = new Address();
+        address = new Address();
         address.setCountry("Polska");
         address.setCity("Gdansk");
         address.setStreet("Grunwaldzka");
         address.setApartmentNumber("22");
         address.setHouseNumber("11");
         address.setPostalCode("80800");
-        savedAddress = addressRepository.save(address);
     }
 
     @Test
@@ -69,10 +65,10 @@ class UserCreateIntegrationTest {
                 null,
                 "user@user.pl",
                 "user",
-                "www.foto.pl",
+                "http://www.foto.pl",
                 "email",
-                savedUserRole,
-                savedAddress);
+                userRole,
+                address);
         String requestBody = objectMapper.writeValueAsString(userDto);
         MockHttpServletRequestBuilder post = post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,8 +80,5 @@ class UserCreateIntegrationTest {
         //then
         MockHttpServletResponse response = result.getResponse();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-
-
     }
-
 }

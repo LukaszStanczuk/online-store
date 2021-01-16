@@ -2,7 +2,6 @@ package com.onlinestore.user;
 
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.adresses.AddressRepository;
-import com.onlinestore.user.role.RolesConfiguration;
 import com.onlinestore.user.role.UserRole;
 import com.onlinestore.user.role.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,15 +35,14 @@ class UserServiceIntegrationTest {
     @Autowired
     UserRoleRepository userRoleRepository;
 
-    Address savedAddress;
-    RolesConfiguration rolesConfiguration;
+    UserRole savedUserRole;
     User savedUser;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
-        addressRepository.deleteAll();
         userRoleRepository.deleteAll();
+        addressRepository.deleteAll();
 
         Address address = new Address();
         address.setCountry("Polska");
@@ -52,28 +51,29 @@ class UserServiceIntegrationTest {
         address.setApartmentNumber("22");
         address.setHouseNumber("11");
         address.setPostalCode("80800");
-        savedAddress = addressRepository.save(address);
 
 
         UserRole userRole = new UserRole();
         userRole.setUserRole("USER");
-        UserRole save = userRoleRepository.save(userRole);
+
+        UserRole adminRole = new UserRole();
+        adminRole.setId(2l);
+        adminRole.setUserRole("ADMIN");
+        savedUserRole = userRoleRepository.save(adminRole);
 
         User user = new User();
         user.setUsername("user@user.com");
         user.setPassword("user");
-        user.setUserRole(save);
-        user.setAvatar("avatar");
-        user.setAddress(savedAddress);
+        user.setUserRole(userRole);
+        user.setAvatar("http://www.avatar.com");
+        user.setAddress(address);
         user.setContactPreference("email");
         savedUser = userRepository.save(user);
-
     }
 
     @Test
     void fetchUserDetails_returnsDetailsOfUser() throws Exception {
         //given
-
         Long userId = savedUser.getId();
 
         MockHttpServletRequestBuilder request = get("/users/" + userId)
@@ -136,6 +136,25 @@ class UserServiceIntegrationTest {
             assertThat(p.getPassword()).isNotNull();
             assertThat(p.getUserRole()).isNotNull();
             assertThat(p.getContactPreference()).isNotNull();
+        });
+    }
+
+    @Test
+    void addRoleToUser_returnsUserWithAdminRole() throws Exception {
+        //given
+        Long userId = savedUser.getId();
+        MockHttpServletRequestBuilder request = post("/users/" + userId + "/roles/" + savedUserRole.getUserRole())
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+
+        //when
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        //then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        List<User> users = userRepository.findAll();
+        assertThat(users.get(0)).satisfies(p -> {
+            assertThat(p.getUserRole().getUserRole()).isEqualTo(savedUserRole.getUserRole());
         });
     }
 }

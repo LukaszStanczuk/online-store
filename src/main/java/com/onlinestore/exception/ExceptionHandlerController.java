@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,16 +18,16 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handle(MethodArgumentNotValidException exception) {
-        Map<String, String> errorDetails = exception.getFieldErrors()
-                .stream()
-                .filter(fieldError -> fieldError.getDefaultMessage() != null)
-                .collect(Collectors
-                        .toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
-        return new ErrorMessage(errorDetails);
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorMessage handle(MethodArgumentNotValidException exception) {
+//        Map<String, String> errorDetails = exception.getFieldErrors()
+//                .stream()
+//                .filter(fieldError -> fieldError.getDefaultMessage() != null)
+//                .collect(Collectors
+//                        .toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
+//        return new ErrorMessage(errorDetails);
+//    }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -40,12 +41,12 @@ public class ExceptionHandlerController {
         log.error(exception.getMessage());
     }
 
-    @AllArgsConstructor
-    static class ErrorMessage {
-        private Map<String, String> error;
+//    @AllArgsConstructor
+//    static class ErrorMessage {
+////        private Map<String, String> error;
 //        private List<String> errors;
-    }
-//
+//    }
+
 //    @ExceptionHandler(MethodArgumentNotValidException.class)
 //    @ResponseStatus(HttpStatus.NOT_FOUND)
 //    public ErrorMessage notFoundComponentException(MethodArgumentNotValidException exception) {
