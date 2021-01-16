@@ -1,8 +1,5 @@
 package com.onlinestore.user;
 
-import com.onlinestore.annotation.ExistingAddress;
-import com.onlinestore.annotation.ExistingRole;
-import com.onlinestore.annotation.ExistingUser;
 import com.onlinestore.user.adresses.Address;
 import com.onlinestore.user.role.UserRole;
 import lombok.AllArgsConstructor;
@@ -21,9 +18,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UserDto {
 
-//    @ExistingUser
     private Long id;
-
     @Email
     @NotBlank
     private String username;
@@ -38,11 +33,11 @@ public class UserDto {
     @NotBlank
     private String contactPreference;
 
-//    @ExistingRole
+    //    @ExistingRole
     @NonNull
     private UserRole userRole;
 
-//    @ExistingAddress
+    //    @ExistingAddress
     @NonNull
     private Address address;
 }
