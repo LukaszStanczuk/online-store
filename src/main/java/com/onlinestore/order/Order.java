@@ -1,4 +1,4 @@
-package order;
+package com.onlinestore.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
