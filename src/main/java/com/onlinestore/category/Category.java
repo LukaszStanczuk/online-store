@@ -21,10 +21,10 @@ public class Category {
     private String name;
     private String parentCategory;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+//    @OneToMany(mappedBy = "category")
+//    private List<Product> products;
 
 
 }
