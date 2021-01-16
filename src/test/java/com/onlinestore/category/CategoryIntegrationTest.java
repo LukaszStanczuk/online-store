@@ -1,6 +1,8 @@
 package com.onlinestore.category;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onlinestore.product.Product;
+import com.onlinestore.product.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,22 +26,31 @@ public class CategoryIntegrationTest {
     MockMvc mockMvc;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
-        categoryRepository.deleteAll();
+//        productRepository.deleteAll();
+//        categoryRepository.deleteAll();
+
+
+
+
+
+
+
     }
 
     @Test
     void createLocalization_returnsLocalizationsAnd200StatusCode() throws Exception {
         // given
-        CategoryDto requestBody = new CategoryDto(1L,"auto","motoryzacja");
+        CategoryDto requestBody = new CategoryDto(null,"auto","motoryzacja");
         MockHttpServletRequestBuilder request = post("/category")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody));
-
         // when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
