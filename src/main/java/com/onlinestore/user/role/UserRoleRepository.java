@@ -1,7 +1,5 @@
 package com.onlinestore.user.role;
 
-import com.onlinestore.user.User;
-import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -33,11 +33,9 @@ public class UserDto {
     @NotBlank
     private String contactPreference;
 
-    //    @ExistingRole
     @NonNull
     private UserRole userRole;
 
-    //    @ExistingAddress
     @NonNull
     private Address address;
 }

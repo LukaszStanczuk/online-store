@@ -4,7 +4,6 @@ import com.onlinestore.annotation.ExistingUser;
 import com.onlinestore.exception.NotFoundException;
 import com.onlinestore.user.User;
 import com.onlinestore.user.UserRepository;
-import com.onlinestore.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
