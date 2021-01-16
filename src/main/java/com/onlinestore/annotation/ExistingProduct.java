@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExistingProduct {
 
-    String message() default "Product doesn't not exist";
+    String message() default "Product doesn't exist";
 
     Class<?>[] groups() default {};
 

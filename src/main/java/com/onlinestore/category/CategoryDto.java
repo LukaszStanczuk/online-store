@@ -1,5 +1,6 @@
 package com.onlinestore.category;
 
+import com.onlinestore.annotation.ExistingCategory;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 public class CategoryDto {
+
+
     private Long id;
     @NotNull
     private String name;
