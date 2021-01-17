@@ -36,5 +36,14 @@ public class CategoryController {
     }
 }
 
+// 1. spring security
+// 2. actuator
+// 3. proste aop
+// 4. flyway // opcjonalne
+// 5. moduł statystyk lub wyszykiwania
+
+// 6. starter-web - interceptor
+// 7. usuwanie starych zamówinia/przenoszenie ich do tabli archiwizującek - @Async, TaskScheduler, @EventListerner asynchroniczny
+// 8. spring-cloud
 
 
